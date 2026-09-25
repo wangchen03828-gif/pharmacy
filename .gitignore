@@ -70,3 +70,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# 登入後端：測試用驗證碼紀錄、寄信套件
+/Server/unitymysql/verification_log.txt
+/Server/unitymysql/PHPMailer/

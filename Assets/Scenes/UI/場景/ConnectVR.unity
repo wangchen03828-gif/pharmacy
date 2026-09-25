@@ -359,7 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caa295c3068c5794fb700b42354a6c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetSceneName: "\u85E5\u5C40(\u7DF4\u7FD2)"
+  targetSceneName: "\u8abf\u914d\u5ba4\u56fa\u9ad4(\u7df4\u7fd2)"
   specificButton: {fileID: 168415274}
 --- !u!1 &398611011
 GameObject:
