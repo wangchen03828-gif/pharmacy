@@ -5,52 +5,52 @@ using Valve.VR;
 
 public class CapDisplay : MonoBehaviour
 {
-    public GameObject bottleCap; // ²~»\ª«¥ó
-    public GameObject lowWater; // §C¤ô¦ì¼ĞÅÒ
-    public GameObject highWater; // °ª¤ô¦ì¼ĞÅÒ
+    public GameObject bottleCap; // ç“¶è“‹ç‰©ä»¶
+    public GameObject lowWater; // ä½æ°´ä½æ¨™ç±¤
+    public GameObject highWater; // é«˜æ°´ä½æ¨™ç±¤
 
-    public SteamVR_Input_Sources leftHand; // ¥ª¤â
-    public SteamVR_Input_Sources rightHand; // ¥k¤â
-    public SteamVR_Action_Boolean grabAction; // ¥Î¨Ó°»´ú§ì¨úªº¦æ¬°
+    public SteamVR_Input_Sources leftHand; // å·¦æ‰‹
+    public SteamVR_Input_Sources rightHand; // å³æ‰‹
+    public SteamVR_Action_Boolean grabAction; // ç”¨ä¾†åµæ¸¬æŠ“å–çš„è¡Œç‚º
 
     private bool leftHandTouching = false;
     private bool rightHandTouching = false;
 
-    // ·í«eªº¤ô¦ì¬O§_²Å¦XÅã¥Ü²~»\ªº±ø¥ó
+    // ç•¶å‰çš„æ°´ä½æ˜¯å¦ç¬¦åˆé¡¯ç¤ºç“¶è“‹çš„æ¢ä»¶
     private bool waterLevelOk = false;
 
-    public WaterLevelControl waterLevelControl; // ¦b¦¹¤Ş¥Î WaterLevelControl ¸}¥»
+    public WaterLevelControl waterLevelControl; // åœ¨æ­¤å¼•ç”¨ WaterLevelControl è…³æœ¬
 
     void Update()
     {
-        // ÀË¬dÂù¤â¬O§_§ì¨ú
-        if (grabAction.GetStateDown(leftHand))
+        // æª¢æŸ¥é›™æ‰‹æ˜¯å¦æŠ“å–
+        if (VRInput.GetStateDown(grabAction, leftHand, KeyCode.Mouse0))
         {
             leftHandTouching = true;
         }
-        if (grabAction.GetStateDown(rightHand))
+        if (VRInput.GetStateDown(grabAction, rightHand, KeyCode.Mouse0))
         {
             rightHandTouching = true;
         }
 
-        // ÀË¬dÂù¤â¬O§_©ñ¶}
-        if (grabAction.GetStateUp(leftHand))
+        // æª¢æŸ¥é›™æ‰‹æ˜¯å¦æ”¾é–‹
+        if (VRInput.GetStateUp(grabAction, leftHand, KeyCode.Mouse0))
         {
             leftHandTouching = false;
         }
-        if (grabAction.GetStateUp(rightHand))
+        if (VRInput.GetStateUp(grabAction, rightHand, KeyCode.Mouse0))
         {
             rightHandTouching = false;
         }
 
-        // ÀË¬d¤ô¦ì¼ĞÅÒ¬O§_¦s¦b
+        // æª¢æŸ¥æ°´ä½æ¨™ç±¤æ˜¯å¦å­˜åœ¨
         waterLevelOk = lowWater.activeInHierarchy && highWater.activeInHierarchy;
 
-        // ·íÂù¤â³£Ä²¸I¥B¤ô¦ì²Å¦X±ø¥ó®ÉÅã¥Ü²~»\
+        // ç•¶é›™æ‰‹éƒ½è§¸ç¢°ä¸”æ°´ä½ç¬¦åˆæ¢ä»¶æ™‚é¡¯ç¤ºç“¶è“‹
         if (leftHandTouching && rightHandTouching && waterLevelOk)
         {
             bottleCap.SetActive(true);
-            waterLevelControl.isCapVisible = true; // ·í²~»\Åã¥Ü«á¡A¤¹³\·n®Ì°Ê§@
+            waterLevelControl.isCapVisible = true; // ç•¶ç“¶è“‹é¡¯ç¤ºå¾Œï¼Œå…è¨±æ–æ™ƒå‹•ä½œ
         }
     }
 }

@@ -3,40 +3,40 @@ using Valve.VR;
 
 public class DoorInteraction : MonoBehaviour
 {
-    public Animator doorAnimator;  // ³s±µ§AªºAnimator
-    public string openDoorAnimation = "door1open";  // °Êµe¦WºÙ
-    public SteamVR_Action_Boolean triggerAction;  // ªO¾÷Áäªº¿é¤J¦æ¬°
-    public SteamVR_Input_Sources handType;  // ¨Ï¥Îªº¤â¬`¡]¥ª¤â©Î¥k¤â¡^
+    public Animator doorAnimator;  // é€£æ¥ä½ çš„Animator
+    public string openDoorAnimation = "door1open";  // å‹•ç•«åç¨±
+    public SteamVR_Action_Boolean triggerAction;  // æ¿æ©Ÿéµçš„è¼¸å…¥è¡Œç‚º
+    public SteamVR_Input_Sources handType;  // ä½¿ç”¨çš„æ‰‹æŸ„ï¼ˆå·¦æ‰‹æˆ–å³æ‰‹ï¼‰
 
-    private bool isHandNearDoor = false;  // ¬O§_¾aªñªù
+    private bool isHandNearDoor = false;  // æ˜¯å¦é è¿‘é–€
 
     private void OnTriggerEnter(Collider other)
     {
-        // ÀË´ú¬O§_¬O¤â¬`¸I¨ìªù
+        // æª¢æ¸¬æ˜¯å¦æ˜¯æ‰‹æŸ„ç¢°åˆ°é–€
         if (other.CompareTag("Hand"))
         {
             isHandNearDoor = true;
-            Debug.Log("¤â¬`¤w¾aªñªù");
+            Debug.Log("æ‰‹æŸ„å·²é è¿‘é–€");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // ·í¤â¬`Â÷¶}ªù
+        // ç•¶æ‰‹æŸ„é›¢é–‹é–€
         if (other.CompareTag("Hand"))
         {
             isHandNearDoor = false;
-            Debug.Log("¤â¬`¤wÂ÷¶}ªù");
+            Debug.Log("æ‰‹æŸ„å·²é›¢é–‹é–€");
         }
     }
 
     void Update()
     {
-        // ¦pªG¤â¬`¾aªñªù¨Ã¥B«ö¤UªO¾÷Áä
-        if (isHandNearDoor && triggerAction.GetStateDown(handType))
+        // å¦‚æœæ‰‹æŸ„é è¿‘é–€ä¸¦ä¸”æŒ‰ä¸‹æ¿æ©Ÿéµ
+        if (isHandNearDoor && VRInput.GetStateDown(triggerAction, handType, KeyCode.Mouse0))
         {
-            doorAnimator.Play(openDoorAnimation);  // ¼½©ñªù¥´¶}°Êµe
-            Debug.Log("ªù¥¿¦b¥´¶}");
+            doorAnimator.Play(openDoorAnimation);  // æ’­æ”¾é–€æ‰“é–‹å‹•ç•«
+            Debug.Log("é–€æ­£åœ¨æ‰“é–‹");
         }
     }
 }

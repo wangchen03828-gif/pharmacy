@@ -3,16 +3,16 @@ using Valve.VR;
 
 public class closewindow : MonoBehaviour
 {
-    public GameObject popupWindow; // ·í«eÅã¥Üªº´£¥Üµ¡¤f
-    public GameObject newPopupWindow; // ­nÅã¥Üªº·s´£¥Üµ¡¤f¡]¥i¿ï¡^
-    public SteamVR_Action_Boolean closeWindowAction; // ºÊÅ¥«ö¶s°Ê§@
+    public GameObject popupWindow; // ç•¶å‰é¡¯ç¤ºçš„æç¤ºçª—å£
+    public GameObject newPopupWindow; // è¦é¡¯ç¤ºçš„æ–°æç¤ºçª—å£ï¼ˆå¯é¸ï¼‰
+    public SteamVR_Action_Boolean closeWindowAction; // ç›£è½æŒ‰éˆ•å‹•ä½œ
 
-    private bool isWindowReplaced = false; // ¬O§_»İ­n´À´«µ¡¤fªº¼Ğ°O
+    private bool isWindowReplaced = false; // æ˜¯å¦éœ€è¦æ›¿æ›çª—å£çš„æ¨™è¨˜
 
     private void Update()
     {
-        // ÀË´ú±±¨î¾¹«ö¶s¬O§_³Q«ö¤U (¨Ò¦p«ö¤U X Áä¨ÓÃö³¬µøµ¡)
-        if (closeWindowAction.GetStateDown(SteamVR_Input_Sources.Any))
+        // æª¢æ¸¬æ§åˆ¶å™¨æŒ‰éˆ•æ˜¯å¦è¢«æŒ‰ä¸‹ (ä¾‹å¦‚æŒ‰ä¸‹ X éµä¾†é—œé–‰è¦–çª—)
+        if (VRInput.GetStateDown(closeWindowAction, SteamVR_Input_Sources.Any, KeyCode.X))
         {
             //Debug.Log("Close button pressed");
 
@@ -31,14 +31,14 @@ public class closewindow : MonoBehaviour
     {
         if (popupWindow != null)
         {
-            popupWindow.SetActive(false); // Ãö³¬·í«e´£¥Üµ¡¤f
+            popupWindow.SetActive(false); // é—œé–‰ç•¶å‰æç¤ºçª—å£
 
-            // ¦pªG·sµøµ¡¥¼³Q«ü¬£¡A«h¤£»İ­n°õ¦æ¥ô¦ó¨ä¥L¾Ş§@
+            // å¦‚æœæ–°è¦–çª—æœªè¢«æŒ‡æ´¾ï¼Œå‰‡ä¸éœ€è¦åŸ·è¡Œä»»ä½•å…¶ä»–æ“ä½œ
             if (newPopupWindow != null)
             {
-                // ³]¸m·sµ¡¤fªº¦ì¸m©MÅã¥Ü
-                newPopupWindow.transform.position = popupWindow.transform.position; // ½T«O·sµ¡¤f¦b¬Û¦P¦ì¸m
-                newPopupWindow.SetActive(true); // Åã¥Ü·sµ¡¤f
+                // è¨­ç½®æ–°çª—å£çš„ä½ç½®å’Œé¡¯ç¤º
+                newPopupWindow.transform.position = popupWindow.transform.position; // ç¢ºä¿æ–°çª—å£åœ¨ç›¸åŒä½ç½®
+                newPopupWindow.SetActive(true); // é¡¯ç¤ºæ–°çª—å£
             }
         }
         else
@@ -49,10 +49,10 @@ public class closewindow : MonoBehaviour
 
     public void ReplacePopupWindow()
     {
-        ClosePopupWindow(); // Ãö³¬·í«eµøµ¡¨ÃÅã¥Ü·sµøµ¡¡]¦pªG¦³¡^
+        ClosePopupWindow(); // é—œé–‰ç•¶å‰è¦–çª—ä¸¦é¡¯ç¤ºæ–°è¦–çª—ï¼ˆå¦‚æœæœ‰ï¼‰
     }
 
-    // ³]¸m¬O§_»İ­n´À´«µ¡¤fªº¼Ğ°O
+    // è¨­ç½®æ˜¯å¦éœ€è¦æ›¿æ›çª—å£çš„æ¨™è¨˜
     public void SetReplaceWindow(bool replace)
     {
         isWindowReplaced = replace;

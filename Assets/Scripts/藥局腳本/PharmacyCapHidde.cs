@@ -7,7 +7,7 @@ public class PharmacyCapHidde : MonoBehaviour
 {
     public GameObject bottle;
     public GameObject cap;
-    public GameObject triggerObject; // ·s¼Wªº triggerObject
+    public GameObject triggerObject; // æ–°å¢çš„ triggerObject
     public GameObject hintDisplay;
     public GameObject tips1;
     public GameObject tips2;
@@ -16,44 +16,44 @@ public class PharmacyCapHidde : MonoBehaviour
     public SteamVR_Behaviour_Pose leftHandPose;
     public SteamVR_Behaviour_Pose rightHandPose;
 
-    // ·s¼WªºÅÜ¼Æ
-    public GameObject objectToHideAfterDustpan; // ³Q¯cºß¸I«á­nÁôÂÃªºª«¥ó
+    // æ–°å¢çš„è®Šæ•¸
+    public GameObject objectToHideAfterDustpan; // è¢«ç•šç®•ç¢°å¾Œè¦éš±è—çš„ç‰©ä»¶
 
-    private bool isBottleHeld = false;       // ²~¤l¬O§_³Q§ì¨ú
-    private GameObject grabbingHand = null;  // §ì¦í²~¤lªº¤â¡]¥ª¤â©Î¥k¤â¡^
-    private bool isCapHidden = false;        // ²~»\¬O§_¤w¸g³QÁôÂÃ
-    private bool hasTriggerObjectActivated = false; // triggerObject ¬O§_Åã¥Ü¹L¤@¦¸
+    private bool isBottleHeld = false;       // ç“¶å­æ˜¯å¦è¢«æŠ“å–
+    private GameObject grabbingHand = null;  // æŠ“ä½ç“¶å­çš„æ‰‹ï¼ˆå·¦æ‰‹æˆ–å³æ‰‹ï¼‰
+    private bool isCapHidden = false;        // ç“¶è“‹æ˜¯å¦å·²ç¶“è¢«éš±è—
+    private bool hasTriggerObjectActivated = false; // triggerObject æ˜¯å¦é¡¯ç¤ºéä¸€æ¬¡
 
-    // ·s¼Wªºª¬ºA°lÂÜ
+    // æ–°å¢çš„ç‹€æ…‹è¿½è¹¤
     private bool dustpanTriggered = false;
     private bool leftHandTouchingBottle = false;
     private bool rightHandTouchingBottle = false;
 
     private void Update()
     {
-        // ¦pªG triggerObject Åã¥Ü¹L¤@¦¸¡A¼Ğ°O¬°¤w±Ò°Ê
+        // å¦‚æœ triggerObject é¡¯ç¤ºéä¸€æ¬¡ï¼Œæ¨™è¨˜ç‚ºå·²å•Ÿå‹•
         if (!hasTriggerObjectActivated && triggerObject.activeSelf)
         {
             hasTriggerObjectActivated = true;
         }
 
-        // ¥u¦³·í triggerObject Åã¥Ü¹L¤@¦¸«á¡A¤~¶i¦æ²~¤l§ì¨úÅŞ¿è
+        // åªæœ‰ç•¶ triggerObject é¡¯ç¤ºéä¸€æ¬¡å¾Œï¼Œæ‰é€²è¡Œç“¶å­æŠ“å–é‚è¼¯
         if (hasTriggerObjectActivated)
         {
-            // ÀË´ú§ì¨ú«ö¶sª¬ºA¡]¥ª¤â©Î¥k¤â¡^
-            bool isLeftHandGrabbing = grabAction.GetState(leftHandPose.inputSource);
-            bool isRightHandGrabbing = grabAction.GetState(rightHandPose.inputSource);
+            // æª¢æ¸¬æŠ“å–æŒ‰éˆ•ç‹€æ…‹ï¼ˆå·¦æ‰‹æˆ–å³æ‰‹ï¼‰
+            bool isLeftHandGrabbing = VRInput.GetState(grabAction, leftHandPose.inputSource, KeyCode.Mouse0);
+            bool isRightHandGrabbing = VRInput.GetState(grabAction, rightHandPose.inputSource, KeyCode.Mouse0);
 
-            // ½T»{²~¤l¬O§_³Q§ì¦í¨Ã°O¿ı§ì¦íªº¤â
+            // ç¢ºèªç“¶å­æ˜¯å¦è¢«æŠ“ä½ä¸¦è¨˜éŒ„æŠ“ä½çš„æ‰‹
             if (isLeftHandGrabbing)
             {
                 isBottleHeld = true;
-                grabbingHand = leftHandPose.gameObject; // ³]©w¥ª¤â¬°§ì¨ú¤â
+                grabbingHand = leftHandPose.gameObject; // è¨­å®šå·¦æ‰‹ç‚ºæŠ“å–æ‰‹
             }
             else if (isRightHandGrabbing)
             {
                 isBottleHeld = true;
-                grabbingHand = rightHandPose.gameObject; // ³]©w¥k¤â¬°§ì¨ú¤â
+                grabbingHand = rightHandPose.gameObject; // è¨­å®šå³æ‰‹ç‚ºæŠ“å–æ‰‹
             }
             else
             {
@@ -65,16 +65,16 @@ public class PharmacyCapHidde : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // ¥u¦³¦b triggerObject Åã¥Ü¹L¤@¦¸¥B²~¤l³Q§ì¦íªº±¡ªp¤U¤~ÀË¬dÁôÂÃÅŞ¿è
+        // åªæœ‰åœ¨ triggerObject é¡¯ç¤ºéä¸€æ¬¡ä¸”ç“¶å­è¢«æŠ“ä½çš„æƒ…æ³ä¸‹æ‰æª¢æŸ¥éš±è—é‚è¼¯
         if (hasTriggerObjectActivated && isBottleHeld && !isCapHidden && other.CompareTag("hand") && other.gameObject != grabbingHand)
         {
             cap.SetActive(false);
             hintDisplay.SetActive(true);
             if (tips1 != null) tips1.SetActive(true);
-            isCapHidden = true; // ¼Ğ°O²~»\¤w¸g³QÁôÂÃ
+            isCapHidden = true; // æ¨™è¨˜ç“¶è“‹å·²ç¶“è¢«éš±è—
         }
 
-        // ¬ö¿ı¥ª¤â¥k¤â¬O§_¦³¸I¨ì²~¨­
+        // ç´€éŒ„å·¦æ‰‹å³æ‰‹æ˜¯å¦æœ‰ç¢°åˆ°ç“¶èº«
         if (other.CompareTag("hand"))
         {
             if (other.gameObject == leftHandPose.gameObject)
@@ -82,7 +82,7 @@ public class PharmacyCapHidde : MonoBehaviour
             if (other.gameObject == rightHandPose.gameObject)
                 rightHandTouchingBottle = true;
 
-            // Dustpan ¤w¸I¹L && Âù¤â³£¸I¨ì²~¨­ => »\¦^²~»\¡]¥uÄ²µo¤@¦¸¡^
+            // Dustpan å·²ç¢°é && é›™æ‰‹éƒ½ç¢°åˆ°ç“¶èº« => è“‹å›ç“¶è“‹ï¼ˆåªè§¸ç™¼ä¸€æ¬¡ï¼‰
             if (dustpanTriggered && leftHandTouchingBottle && rightHandTouchingBottle && !cap.activeSelf)
             {
                 cap.SetActive(true);
@@ -94,19 +94,19 @@ public class PharmacyCapHidde : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        // ¦pªG²~»\¤w¸gÁôÂÃ¡A¤£¦A«ì´_²~»\
+        // å¦‚æœç“¶è“‹å·²ç¶“éš±è—ï¼Œä¸å†æ¢å¾©ç“¶è“‹
         if (isCapHidden)
         {
             return;
         }
 
-        // ·í¤âÂ÷¶}²~»\«á«ì´_²~»\¡]¥u¦³¦b²~»\¥¼³Q¥Ã¤[ÁôÂÃªº±¡ªp¤U¡^
+        // ç•¶æ‰‹é›¢é–‹ç“¶è“‹å¾Œæ¢å¾©ç“¶è“‹ï¼ˆåªæœ‰åœ¨ç“¶è“‹æœªè¢«æ°¸ä¹…éš±è—çš„æƒ…æ³ä¸‹ï¼‰
         if (other.CompareTag("hand"))
         {
             cap.SetActive(true);
         }
 
-        // ²M°£¤âÂ÷¶}ªºª¬ºA
+        // æ¸…é™¤æ‰‹é›¢é–‹çš„ç‹€æ…‹
         if (other.CompareTag("hand"))
         {
             if (other.gameObject == leftHandPose.gameObject)
@@ -118,7 +118,7 @@ public class PharmacyCapHidde : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // ²~»\¥´¶}«á¹J¨ì Dustpan => ÁôÂÃ«ü©wª«¥ó
+        // ç“¶è“‹æ‰“é–‹å¾Œé‡åˆ° Dustpan => éš±è—æŒ‡å®šç‰©ä»¶
         if (isCapHidden && collision.gameObject.CompareTag("Dustpan") && !dustpanTriggered)
         {
             if (objectToHideAfterDustpan != null)

@@ -5,20 +5,20 @@ using Valve.VR;
 
 public class WaterLevelControl : MonoBehaviour
 {
-    // §C¤ô¦ìª«¥ó
+    // ä½æ°´ä½ç‰©ä»¶
     public GameObject lowWater;
-    // °ª¤ô¦ìª«¥ó
+    // é«˜æ°´ä½ç‰©ä»¶
     public GameObject highWater;
-    // ²V¦X¤ô¦ìª«¥ó
+    // æ··åˆæ°´ä½ç‰©ä»¶
     public GameObject mixWaterLevel;
     public GameObject tips1;
     public GameObject tips2;
     public GameObject tips3;    
 
-    private bool isLowWaterTriggered = false; // ¬O§_¤wÄ²µo§C¤ô¦ì
-    private bool isHighWaterTriggered = false; // ¬O§_¤wÄ²µo°ª¤ô¦ì
+    private bool isLowWaterTriggered = false; // æ˜¯å¦å·²è§¸ç™¼ä½æ°´ä½
+    private bool isHighWaterTriggered = false; // æ˜¯å¦å·²è§¸ç™¼é«˜æ°´ä½
     private bool isHideCoroutineStarted = false;
-    private string firstTriggeredTag = ""; // °O¿ı²Ä¤@­Ó¸I¨ìªº¤ô¬W¼ĞÅÒ
+    private string firstTriggeredTag = ""; // è¨˜éŒ„ç¬¬ä¸€å€‹ç¢°åˆ°çš„æ°´æŸ±æ¨™ç±¤
 
     public SteamVR_Input_Sources leftHandInputSource;
     public SteamVR_Input_Sources rightHandInputSource;
@@ -32,12 +32,12 @@ public class WaterLevelControl : MonoBehaviour
     private float shakeThreshold = 15.0f;
     private bool isCapHidden = false;
 
-    public GameObject cap; // ²~»\ª«¥ó
+    public GameObject cap; // ç“¶è“‹ç‰©ä»¶
     public GameObject waterStream;
 
     void Start()
     {
-        // ½T«O§C¤ô¦ì©M°ª¤ô¦ìª«¥ó¶}©l®ÉÁôÂÃ
+        // ç¢ºä¿ä½æ°´ä½å’Œé«˜æ°´ä½ç‰©ä»¶é–‹å§‹æ™‚éš±è—
         if (lowWater != null)
         {
             lowWater.SetActive(false);
@@ -51,56 +51,56 @@ public class WaterLevelControl : MonoBehaviour
             mixWaterLevel.SetActive(false);
         }
 
-        // °O¿ıªì©l±ÛÂà¨¤«×
+        // è¨˜éŒ„åˆå§‹æ—‹è½‰è§’åº¦
         lastLeftHandRotation = leftHandPose.transform.rotation;
         lastRightHandRotation = rightHandPose.transform.rotation;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // ¦pªG§C¤ô¦ìÁÙ¨SÄ²µo¡A¨Ã¥B¸I¨ìªº¬O¥ô·N¤ô¬W
+        // å¦‚æœä½æ°´ä½é‚„æ²’è§¸ç™¼ï¼Œä¸¦ä¸”ç¢°åˆ°çš„æ˜¯ä»»æ„æ°´æŸ±
         if (!isLowWaterTriggered && (other.CompareTag("WaterStream") || other.CompareTag("BleachStream")))
         {
-            // Åã¥Ü§C¤ô¦ìª«¥ó
+            // é¡¯ç¤ºä½æ°´ä½ç‰©ä»¶
             if (lowWater != null)
             {
                 lowWater.SetActive(true);
                 if (tips1 != null) tips1.SetActive(true);
-                isLowWaterTriggered = true; // ¼Ğ°O§C¤ô¦ì¤wÄ²µo
-                firstTriggeredTag = other.tag; // °O¿ı²Ä¤@­Ó¸I¨ìªº¤ô¬WÃş«¬
+                isLowWaterTriggered = true; // æ¨™è¨˜ä½æ°´ä½å·²è§¸ç™¼
+                firstTriggeredTag = other.tag; // è¨˜éŒ„ç¬¬ä¸€å€‹ç¢°åˆ°çš„æ°´æŸ±é¡å‹
             }
         }
-        // ¦pªG§C¤ô¦ì¤wÄ²µo¦ı°ª¤ô¦ìÁÙ¨SÄ²µo¡A¨Ã¥B¸I¨ìªº¬O¥t¤@ºØ¤ô¬W
+        // å¦‚æœä½æ°´ä½å·²è§¸ç™¼ä½†é«˜æ°´ä½é‚„æ²’è§¸ç™¼ï¼Œä¸¦ä¸”ç¢°åˆ°çš„æ˜¯å¦ä¸€ç¨®æ°´æŸ±
         else if (isLowWaterTriggered && !isHighWaterTriggered)
         {
-            // §PÂ_¸I¨ìªº¬O§_¬°»P²Ä¤@­Ó¤£¦Pªº¤ô¬W
+            // åˆ¤æ–·ç¢°åˆ°çš„æ˜¯å¦ç‚ºèˆ‡ç¬¬ä¸€å€‹ä¸åŒçš„æ°´æŸ±
             if ((other.CompareTag("WaterStream") || other.CompareTag("BleachStream")) && other.tag != firstTriggeredTag)
             {
-                // Åã¥Ü°ª¤ô¦ìª«¥ó
+                // é¡¯ç¤ºé«˜æ°´ä½ç‰©ä»¶
                 if (highWater != null)
                 {
                     highWater.SetActive(true);
                     if (tips2 != null) tips2.SetActive(true);
-                    isHighWaterTriggered = true; // ¼Ğ°O°ª¤ô¦ì¤wÄ²µo
+                    isHighWaterTriggered = true; // æ¨™è¨˜é«˜æ°´ä½å·²è§¸ç™¼
                 }
             }
         }
     }
 
-    public bool isCapVisible = false; // ¥Î¨ÓÀË¬d²~»\¬O§_¤wÅã¥Ü
-    private bool isShakeComplete = false; // ¥Î¨ÓÀË¬d·n®Ì¬O§_§¹¦¨
+    public bool isCapVisible = false; // ç”¨ä¾†æª¢æŸ¥ç“¶è“‹æ˜¯å¦å·²é¡¯ç¤º
+    private bool isShakeComplete = false; // ç”¨ä¾†æª¢æŸ¥æ–æ™ƒæ˜¯å¦å®Œæˆ
 
     void Update()
     {
-        // ¨ú±o¥ª¥k¤â±±¨î¾¹ªº·í«e±ÛÂà
+        // å–å¾—å·¦å³æ‰‹æ§åˆ¶å™¨çš„ç•¶å‰æ—‹è½‰
         Quaternion currentLeftHandRotation = leftHandPose.transform.rotation;
         Quaternion currentRightHandRotation = rightHandPose.transform.rotation;
 
-        // ­pºâ±ÛÂà¨¤«×ÅÜ¤Æ¶q
+        // è¨ˆç®—æ—‹è½‰è§’åº¦è®ŠåŒ–é‡
         float leftHandRotationChange = Quaternion.Angle(currentLeftHandRotation, lastLeftHandRotation);
         float rightHandRotationChange = Quaternion.Angle(currentRightHandRotation, lastRightHandRotation);
 
-        // ÀË¬d·n®Ì±ø¥ó
+        // æª¢æŸ¥æ–æ™ƒæ¢ä»¶
         if (isCapVisible && !isShakeComplete)
         {
             if (leftHandRotationChange > shakeThreshold || rightHandRotationChange > shakeThreshold)
@@ -118,52 +118,52 @@ public class WaterLevelControl : MonoBehaviour
 
         if (waterStream.activeSelf && (!mixWaterLevel.activeSelf || !isCapHidden))
         {
-            waterStream.SetActive(false); // Á×§K»~Ä²¾É­P¤ô¬W´£«e¥X²{
+            waterStream.SetActive(false); // é¿å…èª¤è§¸å°è‡´æ°´æŸ±æå‰å‡ºç¾
         }
 
         lastLeftHandRotation = currentLeftHandRotation;
         lastRightHandRotation = currentRightHandRotation;
 
-        // ÀË¬d²~»\ÁôÂÃ±ø¥ó
+        // æª¢æŸ¥ç“¶è“‹éš±è—æ¢ä»¶
         if (isShakeComplete && isCapVisible && !isCapHidden && !isHideCoroutineStarted)
         {
             if (BothHandsInteractingWithCap())
             {
-                isHideCoroutineStarted = true; // ¨¾¤î­«½Æ¶i¤J¨óµ{
+                isHideCoroutineStarted = true; // é˜²æ­¢é‡è¤‡é€²å…¥å”ç¨‹
                 StartCoroutine(HideCapWithDelay());
             }
         }
     }
 
-    // ©µ¿ğ3¬íÁôÂÃ²~»\
+    // å»¶é²3ç§’éš±è—ç“¶è“‹
     private IEnumerator HideCapWithDelay()
     {
-        yield return new WaitForSeconds(0.5f); // ©µ¿ğ
-        cap.SetActive(false); // ÁôÂÃ²~»\
-        isCapHidden = true;  // ¨¾¤î­«½ÆÁôÂÃ
+        yield return new WaitForSeconds(0.5f); // å»¶é²
+        cap.SetActive(false); // éš±è—ç“¶è“‹
+        isCapHidden = true;  // é˜²æ­¢é‡è¤‡éš±è—
 
-        // ¥u¦³¦b mixWaterLevel ¤w¸gÅã¥Üªºª¬ºA¤U¡A¤~±Ò¥Î¤ô¬W
+        // åªæœ‰åœ¨ mixWaterLevel å·²ç¶“é¡¯ç¤ºçš„ç‹€æ…‹ä¸‹ï¼Œæ‰å•Ÿç”¨æ°´æŸ±
         if (mixWaterLevel != null && mixWaterLevel.activeSelf)
         {
-            waterStream.SetActive(true); // ±Ò¥Î¤ô¬y
+            waterStream.SetActive(true); // å•Ÿç”¨æ°´æµ
         }
     }
 
-    // ÀË¬d¬O§_¨â°¦¤â±µÄ²²~»\¨Ã¥¿½T¾Ş§@
+    // æª¢æŸ¥æ˜¯å¦å…©éš»æ‰‹æ¥è§¸ç“¶è“‹ä¸¦æ­£ç¢ºæ“ä½œ
     private bool BothHandsInteractingWithCap()
     {
         bool isLeftHandTouching = IsHandTouchingCap(leftHandPose);
         bool isRightHandTouching = IsHandTouchingCap(rightHandPose);
 
-        // ½T«O¨â°¦¤âªºª¬ºA²Å¦X±ø¥ó
-        bool isLeftHandGrabbing = grabAction.GetState(leftHandInputSource);
-        bool isRightHandGrabbing = grabAction.GetState(rightHandInputSource);
+        // ç¢ºä¿å…©éš»æ‰‹çš„ç‹€æ…‹ç¬¦åˆæ¢ä»¶
+        bool isLeftHandGrabbing = VRInput.GetState(grabAction, leftHandInputSource, KeyCode.Mouse0);
+        bool isRightHandGrabbing = VRInput.GetState(grabAction, rightHandInputSource, KeyCode.Mouse0);
 
-        // ¤@°¦¤â§ì¨ú²~¤l¡A¥t¤@°¦¤â±µÄ²²~»\
+        // ä¸€éš»æ‰‹æŠ“å–ç“¶å­ï¼Œå¦ä¸€éš»æ‰‹æ¥è§¸ç“¶è“‹
         return (isLeftHandGrabbing && isRightHandTouching) || (isRightHandGrabbing && isLeftHandTouching);
     }
 
-    // ÀË¬d«ü©wªº¤â¬O§_±µÄ²²~»\
+    // æª¢æŸ¥æŒ‡å®šçš„æ‰‹æ˜¯å¦æ¥è§¸ç“¶è“‹
     private bool IsHandTouchingCap(SteamVR_Behaviour_Pose handPose)
     {
         Collider[] colliders = Physics.OverlapSphere(cap.transform.position, 0.1f);

@@ -6,31 +6,40 @@ using Valve.VR.InteractionSystem;
 
 public class PlayerMovementScript : MonoBehaviour
 {
-    public SteamVR_Action_Vector2 input; // ¤Gºû¿é¤J¡Gx ¶b©M z ¶b
-    public SteamVR_Action_Boolean AButtonAction; // A «öÁäªº Action
-    public SteamVR_Action_Boolean BButtonAction; // B «öÁäªº Action
+    public SteamVR_Action_Vector2 input; // äºŒç¶­è¼¸å…¥ï¼šx è»¸å’Œ z è»¸
+    public SteamVR_Action_Boolean AButtonAction; // A æŒ‰éµçš„ Action
+    public SteamVR_Action_Boolean BButtonAction; // B æŒ‰éµçš„ Action
     public float speed;
-    public float verticalSpeed; // ««ª½²¾°Êªº³t«×
+    public float verticalSpeed; // å‚ç›´ç§»å‹•çš„é€Ÿåº¦
 
     void Update()
     {
-        // Àò¨ú¤ô¥­²¾°Êªº¿é¤J
+        // æ²’æ¥é ­ç›”ï¼ˆç·¨è¼¯å™¨æ¸¬è©¦æˆ–å…é ­ç›”ç‰ˆï¼‰æ™‚ SteamVR æ²’æœ‰å•Ÿå‹•ï¼Œ
+        // æ–æ¡¿è¼¸å…¥èˆ‡é ­éƒ¨ä½ç½®éƒ½ä¸å­˜åœ¨ï¼Œç›´æ¥è·³éï¼Œäº¤çµ¦ SteamVR çš„éµç›¤æ»‘é¼ æ¨¡å¼æ§åˆ¶ã€‚
+        if (!VRInput.Ready || input == null || Player.instance == null)
+            return;
+
+        Transform head = Player.instance.hmdTransform;
+        if (head == null)
+            return;
+
+        // ç²å–æ°´å¹³ç§»å‹•çš„è¼¸å…¥
         var localMovement = new Vector3(input.axis.x, 0, input.axis.y);
 
-        // ««ª½²¾°Ê±±¨î
-        if (AButtonAction.state) // ¦pªG A «öÁä³Q«ö¤U
+        // å‚ç›´ç§»å‹•æ§åˆ¶
+        if (AButtonAction != null && AButtonAction.state) // å¦‚æœ A æŒ‰éµè¢«æŒ‰ä¸‹
         {
             localMovement.y -= verticalSpeed;
         }
-        if (BButtonAction.state) // ¦pªG B «öÁä³Q«ö¤U
+        if (BButtonAction != null && BButtonAction.state) // å¦‚æœ B æŒ‰éµè¢«æŒ‰ä¸‹
         {
             localMovement.y += verticalSpeed;
         }
 
-        // ±N¥»¦a²¾°Ê¤è¦VÂà´«¬°¥@¬É§¤¼Ğ¨t¤¤ªº¤è¦V
-        var worldMovement = Player.instance.hmdTransform.TransformDirection(localMovement);
+        // å°‡æœ¬åœ°ç§»å‹•æ–¹å‘è½‰æ›ç‚ºä¸–ç•Œåæ¨™ç³»ä¸­çš„æ–¹å‘
+        var worldMovement = head.TransformDirection(localMovement);
 
-        // §ó·sª±®aªº¦ì¸m
+        // æ›´æ–°ç©å®¶çš„ä½ç½®
         transform.position += speed * Time.deltaTime * worldMovement;
     }
 }

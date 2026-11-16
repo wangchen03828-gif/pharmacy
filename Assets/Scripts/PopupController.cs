@@ -3,21 +3,21 @@ using Valve.VR;
 
 public class PopupController : MonoBehaviour
 {
-    public GameObject[] popupWindows; // ©ì¤J©Ò¦³´£¥Üµ¡¤f
+    public GameObject[] popupWindows; // æ‹–å…¥æ‰€æœ‰æç¤ºçª—å£
     private int currentPopupIndex = 0;
 
-    public SteamVR_Action_Boolean closeAction; // ©ì¤JSteamVRªºXÁä¾Ş§@
+    public SteamVR_Action_Boolean closeAction; // æ‹–å…¥SteamVRçš„Xéµæ“ä½œ
 
     void Update()
     {
-        if (closeAction.GetStateDown(SteamVR_Input_Sources.LeftHand))
+        if (VRInput.GetStateDown(closeAction, SteamVR_Input_Sources.LeftHand, KeyCode.X))
         {
             if (popupWindows.Length > 0)
             {
-                // ÁôÂÃ·í«e´£¥Üµ¡¤f
+                // éš±è—ç•¶å‰æç¤ºçª—å£
                 popupWindows[currentPopupIndex].SetActive(false);
 
-                // Åã¥Ü¤U¤@­Ó´£¥Üµ¡¤f
+                // é¡¯ç¤ºä¸‹ä¸€å€‹æç¤ºçª—å£
                 currentPopupIndex = (currentPopupIndex + 1) % popupWindows.Length;
                 popupWindows[currentPopupIndex].SetActive(true);
             }

@@ -9,7 +9,7 @@ using UnityEngine;
 /// 選單「打包」：一鍵產生「要頭盔」與「免頭盔」兩種執行檔。
 ///  - 要頭盔：啟動時初始化 XR，直接進 VR。
 ///  - 免頭盔：不初始化 XR，並加上 NO_HMD 定義，SteamVR Player 會自動切到鍵盤滑鼠 (2D Fallback)。
-/// 打包完成後會把 XR 設定還原成「要頭盔」，不影響平常在編輯器裡測試。
+/// 打包完成後會把 XR 設定與 NO_HMD 還原成打包前的狀態，不影響平常在編輯器裡測試（測試模式見「打包 > 測試模式」）。
 /// 輸出位置：專案資料夾/Builds/要頭盔執行檔、Builds/免頭盔執行檔
 /// </summary>
 public static class BuildVersions
@@ -50,6 +50,8 @@ public static class BuildVersions
 
         var xrSettings = XRGeneralSettingsPerBuildTarget.XRGeneralSettingsForBuildTarget(BuildTargetGroup.Standalone);
         bool originalInit = xrSettings != null && xrSettings.InitManagerOnStart;
+        // 編輯器若切在「免頭盔」測試模式，Player Settings 會留著 NO_HMD；打包要頭盔版時先拿掉，打包完再放回去
+        bool originalNoHmd = TestModeMenu.HasNoHmdDefine();
 
         string outputDir = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Builds", folderName);
 
@@ -70,6 +72,8 @@ public static class BuildVersions
                 xrSettings.InitManagerOnStart = useVR;
                 EditorUtility.SetDirty(xrSettings);
             }
+            if (useVR && originalNoHmd)
+                TestModeMenu.SetNoHmdDefine(false);
 
             BuildReport report = BuildPipeline.BuildPlayer(options);
             bool ok = report.summary.result == BuildResult.Succeeded;
@@ -83,7 +87,9 @@ public static class BuildVersions
         }
         finally
         {
-            // 還原 XR 設定，避免影響編輯器 Play 測試
+            // 還原 NO_HMD 與 XR 設定，避免影響編輯器 Play 測試
+            if (useVR && originalNoHmd)
+                TestModeMenu.SetNoHmdDefine(true);
             if (xrSettings != null)
             {
                 xrSettings.InitManagerOnStart = originalInit;

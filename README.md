@@ -77,12 +77,31 @@ Unity 上方選單 **打包**：
 
 | 問題 | 影響 | 建議 |
 |---|---|---|
-| 兩個練習場景中「門」物件的 Animator Controller 遺失（從未上傳到 git） | 點門不會開關，Console 可能出現警告 | 參考 `Assets/Animations/door1.controller` 重做一個有 `isOpen` 參數的 Controller 指定給「門」，或移除 `DoorOpen` 元件 |
-| `Assets/Scripts/PlayMovementScript.cs` 檔名與類別名稱 `PlayerMovementScript` 不一致 | Unity 找不到此腳本，VR 搖桿移動沒有作用 | 把檔案改名為 `PlayerMovementScript.cs`（連同 .meta），再到場景調整移動速度 |
 | 調配室(測驗) 有遺失的預製物件與腳本 | 該場景無法正常使用 | 需要時再重做 |
 | 登入寄信需要 Gmail 應用程式密碼 | 未設定時驗證碼只會寫進文字檔 | 見 `Server/README.md` |
 
-## 7. 注意事項
+### 已處理（2026/11）
+
+- 搖桿移動腳本檔名已改為 `PlayerMovementScript.cs`，沒接頭盔時會自動跳過，不再報錯。
+- 「門」的 Animator Controller 已補上（`Assets/Animations/door_isOpen.controller`，沿用場景原本指向的 GUID，場景不用重新指定）。點門會開、再點會關（`DoorOpen` 用滑鼠點擊，鍵盤滑鼠模式可用）。
+- 所有讀手把按鍵的腳本改用 `VRInput`（`Assets/Scripts/VRInput.cs`），沒接頭盔時不再出現 NullReferenceException，並改用鍵盤滑鼠替代：**X 鍵**關閉提示視窗、**滑鼠左鍵**當抓取／板機。
+- 畫面左上角紅色 X 是「結束」按鈕（回到選擇練習頁），不是錯誤。
+
+## 7. 編輯器測試模式（有頭盔／免頭盔）
+
+選單 **打包 → 測試模式** 可以一鍵切換在編輯器按 Play 時的模式：
+
+| 模式 | 會做什麼 | 操作方式 |
+|---|---|---|
+| 有頭盔 (VR) | 移除 `NO_HMD`、啟動時初始化 XR | 先開 SteamVR、接好頭盔 |
+| 免頭盔 (鍵盤滑鼠) | 加上 `NO_HMD`、不初始化 XR（否則會啟動 MockHMD 模擬頭盔，畫面變左右雙眼且無法移動） | WASD／QE 移動、右鍵轉視角、左鍵抓取、X 關提示視窗 |
+
+- 這兩個設定存在 `ProjectSettings/ProjectSettings.asset` 與 `Assets/XR/XRGeneralSettingsPerBuildTarget.asset`，**commit 時不要勾這兩個檔案**，避免把自己的測試模式推給別人。
+- 打包不受影響：「打包 → 要頭盔版」會暫時拿掉 `NO_HMD` 並開啟 XR，打包完再還原。
+- 免頭盔模式只有一隻滑鼠手，需要雙手配合的步驟不一定能完整操作，正式驗收仍以頭盔測試為準。
+- 沒接頭盔時 Console 可能還會出現一兩行 SteamVR 內部的 `SteamVR_Action_Pose` 錯誤（場景載入時出現一次），不影響執行。
+
+## 8. 注意事項
 
 - 原本資料庫匯出檔（含使用者 email 與密碼雜湊）**不要上傳到 GitHub**，`Server/database/unitybackend.sql` 是去除個資後的版本。
 - 開發時不要直接在檔案總管裡搬移或改名 Unity 資源，要在 Unity 的 Project 視窗裡操作，否則 .meta 會對不上，造成 missing。

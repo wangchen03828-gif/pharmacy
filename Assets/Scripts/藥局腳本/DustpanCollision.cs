@@ -5,61 +5,61 @@ using Valve.VR;
 
 public class DustpanCollision : MonoBehaviour
 {
-    [SerializeField] private GameObject targetObject; // ­nÁôÂÃªºª«¥ó
+    [SerializeField] private GameObject targetObject; // è¦éš±è—çš„ç‰©ä»¶
     [SerializeField] private GameObject displayObject;
-    [SerializeField] private string glassJarTag = "GlassJar"; // ¬Á¼şÅøªº¼ĞÅÒ
+    [SerializeField] private string glassJarTag = "GlassJar"; // ç»ç’ƒç½çš„æ¨™ç±¤
 
-    public GameObject bottleCap; // ²~»\ª«¥ó
+    public GameObject bottleCap; // ç“¶è“‹ç‰©ä»¶
 
-    public SteamVR_Input_Sources leftHand; // ¥ª¤â
-    public SteamVR_Input_Sources rightHand; // ¥k¤â
-    public SteamVR_Action_Boolean grabAction; // ¥Î¨Ó°»´ú§ì¨úªº¦æ¬°
+    public SteamVR_Input_Sources leftHand; // å·¦æ‰‹
+    public SteamVR_Input_Sources rightHand; // å³æ‰‹
+    public SteamVR_Action_Boolean grabAction; // ç”¨ä¾†åµæ¸¬æŠ“å–çš„è¡Œç‚º
 
     private bool leftHandTouching = false;
     private bool rightHandTouching = false;
-    private bool targetObjectHidden = false; // ¼Ğ°O¥Ø¼Ğª«¥ó¬O§_¤wÁôÂÃ
+    private bool targetObjectHidden = false; // æ¨™è¨˜ç›®æ¨™ç‰©ä»¶æ˜¯å¦å·²éš±è—
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("¸I¼²¨ìªºª«¥ó¬O: " + collision.gameObject.name); // ¦L¥X¸I¼²ª«¥óªº¦WºÙ
-        // ½T»{¸I¼²¨ìªºª«¥ó¬O§_¬O¬Á¼şÅø
+        Debug.Log("ç¢°æ’åˆ°çš„ç‰©ä»¶æ˜¯: " + collision.gameObject.name); // å°å‡ºç¢°æ’ç‰©ä»¶çš„åç¨±
+        // ç¢ºèªç¢°æ’åˆ°çš„ç‰©ä»¶æ˜¯å¦æ˜¯ç»ç’ƒç½
         if (collision.gameObject.CompareTag(glassJarTag))
         {
             if (targetObject != null)
             {
-                targetObject.SetActive(false); // ÁôÂÃ¥Ø¼Ğª«¥ó
-                targetObjectHidden = true; // ³]¸m¥Ø¼Ğª«¥ó¤wÁôÂÃ
+                targetObject.SetActive(false); // éš±è—ç›®æ¨™ç‰©ä»¶
+                targetObjectHidden = true; // è¨­ç½®ç›®æ¨™ç‰©ä»¶å·²éš±è—
             }
             else
             {
-                Debug.LogWarning("¥¼«ü©w­nÁôÂÃªºª«¥ó¡I");
+                Debug.LogWarning("æœªæŒ‡å®šè¦éš±è—çš„ç‰©ä»¶ï¼");
             }
         }
     }
 
     void Update()
     {
-        // ÀË¬dÂù¤â¬O§_§ì¨ú
-        if (grabAction.GetStateDown(leftHand))
+        // æª¢æŸ¥é›™æ‰‹æ˜¯å¦æŠ“å–
+        if (VRInput.GetStateDown(grabAction, leftHand, KeyCode.Mouse0))
         {
             leftHandTouching = true;
         }
-        if (grabAction.GetStateDown(rightHand))
+        if (VRInput.GetStateDown(grabAction, rightHand, KeyCode.Mouse0))
         {
             rightHandTouching = true;
         }
 
-        // ÀË¬dÂù¤â¬O§_©ñ¶}
-        if (grabAction.GetStateUp(leftHand))
+        // æª¢æŸ¥é›™æ‰‹æ˜¯å¦æ”¾é–‹
+        if (VRInput.GetStateUp(grabAction, leftHand, KeyCode.Mouse0))
         {
             leftHandTouching = false;
         }
-        if (grabAction.GetStateUp(rightHand))
+        if (VRInput.GetStateUp(grabAction, rightHand, KeyCode.Mouse0))
         {
             rightHandTouching = false;
         }
 
-        // ·íÂù¤â³£Ä²¸I¥B¥Ø¼Ğª«¥ó¤wÁôÂÃ®ÉÅã¥Ü²~»\
+        // ç•¶é›™æ‰‹éƒ½è§¸ç¢°ä¸”ç›®æ¨™ç‰©ä»¶å·²éš±è—æ™‚é¡¯ç¤ºç“¶è“‹
         if (leftHandTouching && rightHandTouching && targetObjectHidden)
         {
             bottleCap.SetActive(true);
