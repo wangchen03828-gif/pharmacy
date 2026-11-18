@@ -9,46 +9,6 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: "\u6750\u8D28"
     second: {fileID: 2100000, guid: bdf4f9f9e1c335e42b5a3adfc6e28aed, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u6750\u8D28.001"
-    second: {fileID: 2100000, guid: 1065a0da49b5e8547b356e8257a7dc78, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u6750\u8D28.002"
-    second: {fileID: 2100000, guid: 15ed5f89c23a4934aa6994e07f8c30d5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u6750\u8D28.003"
-    second: {fileID: 2100000, guid: 6ff08394c5cba184f8f66ba6d1ef08e2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u6750\u8D28.004"
-    second: {fileID: 2100000, guid: 409233d4f85ecf248a79f89c5f18a7d1, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u6750\u8D28.005"
-    second: {fileID: 2100000, guid: e2c162affe7fc0f4f9d7ed3d5eca1be5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u6750\u8D28.006"
-    second: {fileID: 2100000, guid: bff1cefd8f382204aa4e91a6f972b785, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u6750\u8D28.008"
-    second: {fileID: 2100000, guid: 05d99c6de2049524a897844c7961c31c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u6750\u8D28.009"
-    second: {fileID: 2100000, guid: f72fbec465440b2409670b3c26290172, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
