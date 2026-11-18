@@ -17221,7 +17221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcfad03afb6e9649a0bdc176fb72e50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionObject: {fileID: 1208481252}
+  collisionObject: {fileID: 587937185}
   trashBin: {fileID: 691722958}
   appear: {fileID: 692924336}
   scoreManager: {fileID: 581225471}
