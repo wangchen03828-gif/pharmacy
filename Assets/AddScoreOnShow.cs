@@ -14,6 +14,8 @@ public class AddScoreOnShow : MonoBehaviour
         // 如果物件被顯示且尚未加過分
         if (gameObject.activeSelf && !hasScored)
         {
+            if (scoreManager == null)
+                scoreManager = FindObjectOfType<ScoreManager>(); // 場景裡沒拉參考時自己找
             if (scoreManager != null)
             {
                 scoreManager.AddScore(scoreToAdd); // 加分
@@ -22,7 +24,8 @@ public class AddScoreOnShow : MonoBehaviour
             }
             else
             {
-                Debug.LogError("ScoreManager is not assigned.");
+                Debug.LogWarning(gameObject.name + "：找不到 ScoreManager，這個物件不加分。");
+                hasScored = true; // 只提醒一次，不要每一幀洗版
             }
         }
     }

@@ -3,22 +3,26 @@ using Valve.VR.InteractionSystem;
 
 public class VRButtonHandler : MonoBehaviour
 {
-    public GameObject popupWindow; // ©ì¤J§Aªº´£¥Üµ¡¤f
-    public ScoreManager scoreManager; // ©ì¤J ScoreManager ª«¥ó
+    public GameObject popupWindow; // æ‹–å…¥ä½ çš„æç¤ºçª—å£
+    public ScoreManager scoreManager; // æ‹–å…¥ ScoreManager ç‰©ä»¶
 
-    private bool scoreAdded = false; // °lÂÜ¬O§_¤w¸g¥[¹L¤À¼Æ
+    private bool scoreAdded = false; // è¿½è¹¤æ˜¯å¦å·²ç¶“åŠ éåˆ†æ•¸
+    private bool popupShown = false; // æç¤ºåªè·³ä¸€æ¬¡ï¼šä¹‹å¾Œæ‰‹å†ç¶“éå°è¬›æ©Ÿä¸æœƒæŠŠæµç¨‹æ‹‰å›é€™ä¸€æ­¥
 
-    // ·í±±¨î¾¹ªº¤â¸I¨ì«ö¶sªº®É­Ô
+    // ç•¶æ§åˆ¶å™¨çš„æ‰‹ç¢°åˆ°æŒ‰éˆ•çš„æ™‚å€™
     private void OnHandHoverBegin(Hand hand)
     {
-        // Åã¥Ü´£¥Üµ¡¤f
+        // é¡¯ç¤ºæç¤ºçª—å£ï¼ˆåªé¡¯ç¤ºä¸€æ¬¡ï¼›æ²’æŒ‡å®šæç¤ºçš„å°è¬›æ©Ÿç›´æ¥ç•¥éï¼‰
+        if (popupShown || popupWindow == null)
+            return;
         popupWindow.SetActive(true);
+        popupShown = true;
 
-        // ¦pªGÁÙ¨S¥[¹L¤À¼Æ¡A¥[¤À
+        // å¦‚æœé‚„æ²’åŠ éåˆ†æ•¸ï¼ŒåŠ åˆ†
         if (!scoreAdded && scoreManager != null)
         {
             scoreManager.AddScore(5);
-            scoreAdded = true; // °O¿ı¤w¸g¥[¹L¤À¼Æ
+            scoreAdded = true; // è¨˜éŒ„å·²ç¶“åŠ éåˆ†æ•¸
         }
         else if (scoreManager == null)
         {
@@ -28,7 +32,7 @@ public class VRButtonHandler : MonoBehaviour
 
     private void OnHandHoverEnd(Hand hand)
     {
-        // ÁôÂÃ´£¥Üµ¡¤f (¦pªG»İ­n)
+        // éš±è—æç¤ºçª—å£ (å¦‚æœéœ€è¦)
         // popupWindow.SetActive(false);
     }
 }

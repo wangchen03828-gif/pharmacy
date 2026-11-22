@@ -11,6 +11,7 @@ using Valve.VR.InteractionSystem;
 ///
 /// 這支腳本在每個場景載入後檢查：如果 SteamVR Player 切到了鍵盤滑鼠模式，
 /// 就把鍵盤滑鼠攝影機移到頭盔版的同一個位置，並改成平視。
+/// 另外把滑鼠手設成 tag「hand」並加上觸發碰撞體，讓「用手碰」的步驟（例如打開潑灑箱蓋子）在免頭盔模式也能觸發。
 /// 有頭盔時不會做任何事；不需要掛在場景裡。
 /// </summary>
 public class NoHmdSpawnFix : MonoBehaviour
@@ -69,6 +70,28 @@ public class NoHmdSpawnFix : MonoBehaviour
         {
             Vector3 e = cam.transform.localEulerAngles;
             cam.transform.localEulerAngles = new Vector3(0f, e.y, 0f);
+
+            // 固定視角高度（地板 + 1.6 公尺）
+            if (cam.GetComponent<FallbackHeightLock>() == null)
+                cam.gameObject.AddComponent<FallbackHeightLock>();
+        }
+
+        // 讓滑鼠手也算是「手」：場景裡很多觸碰判斷（例如打開潑灑箱蓋子）是看 tag 為 hand 的觸發碰撞體。
+        // 碰撞體放在子物件、圖層設為 Ignore Raycast：滑鼠手每一幀用射線找游標指到的東西，
+        // 碰撞體若會被射線打到，手會一直打到自己（紅點閃爍、指不到箱子裡的東西）。
+        var fallbackHand = fallback.GetComponentInChildren<Hand>(true);
+        if (fallbackHand != null && fallbackHand.transform.Find("[HandTouch]") == null)
+        {
+            var touch = new GameObject("[HandTouch]");
+            touch.transform.SetParent(fallbackHand.transform, false);
+            touch.tag = "hand";
+            touch.layer = 2; // Ignore Raycast
+            var sphere = touch.AddComponent<SphereCollider>();
+            sphere.isTrigger = true;
+            sphere.radius = 0.06f;
+            var rb = touch.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
+            rb.useGravity = false;
         }
 
         Destroy(gameObject);

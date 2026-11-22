@@ -9,10 +9,10 @@ using Valve.VR.InteractionSystem;
 /// 右手搖桿：左右扳轉向。預設每扳一次轉 30 度（Snap，比較不會暈）；可改成 Smooth 連續轉。
 ///
 /// 高度（heightMode）：
-///  - CalibrateOnStart（預設）：進場景時量一次，把攝影機調到「地板 + eyeHeight」。
+///  - CalibrateOnStart：進場景時量一次，把攝影機調到「地板 + eyeHeight」。
 ///    之後蹲下、彎腰視角會跟著降低，可以撿地上的東西、擦地板。
 ///    左手 Y 鍵（或鍵盤 R）可以重新校正。
-///  - LockEveryFrame：每一幀都把攝影機鎖在「地板 + eyeHeight」，完全固定。
+///  - LockEveryFrame（預設）：每一幀都把攝影機鎖在「地板 + eyeHeight」，完全固定。
 ///    注意：鎖住後蹲下視角不會變，但手會跟著身體往下，碰不到地面的東西。
 ///  - Off：不調整，用頭盔量到的真實高度。
 /// </summary>
@@ -35,7 +35,7 @@ public class PlayerMovementScript : MonoBehaviour
     public float smoothTurnSpeed = 90f;
 
     [Header("高度")]
-    public HeightMode heightMode = HeightMode.CalibrateOnStart;
+    public HeightMode heightMode = HeightMode.LockEveryFrame;
     [Tooltip("眼睛離地板的高度（公尺）")]
     public float eyeHeight = 1.6f;
     [Tooltip("勾選後用下面的 floorY 當地板高度；不勾則進場景時自動往下偵測地板")]

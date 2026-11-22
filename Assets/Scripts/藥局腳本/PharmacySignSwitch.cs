@@ -5,57 +5,59 @@ using Valve.VR.InteractionSystem;
 
 public class PharmacySignSwitch : MonoBehaviour
 {
-    public GameObject foldedSign; // ºPÅ|ªºÄµ¥ÜµP
-    public GameObject unfoldedSign; // ®i¶}ªºÄµ¥ÜµP
-    public GameObject collisionObject; // ¹w´Á¸I¼²ªººPÅ|Äµ¥ÜµP
+    public GameObject foldedSign; // æ‘ºç–Šçš„è­¦ç¤ºç‰Œ
+    public GameObject unfoldedSign; // å±•é–‹çš„è­¦ç¤ºç‰Œ
+    public GameObject collisionObject; // é æœŸç¢°æ’çš„æ‘ºç–Šè­¦ç¤ºç‰Œ
     public GameObject tips;
+    private bool done = false; // åªè§¸ç™¼ä¸€æ¬¡ï¼šè­¦ç¤ºç‰Œä¹‹å¾Œå†ç¢°åˆ°è§¸ç™¼é»ä¸æœƒé‡è¤‡å«å‡ºæç¤º
 
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("Collision Detected with: " + other.gameObject.name);
-        // ÀË¬d¸I¼²ªºª«Åé¬O§_¬O¥Ø¼Ğª«¥ó
+        // æª¢æŸ¥ç¢°æ’çš„ç‰©é«”æ˜¯å¦æ˜¯ç›®æ¨™ç‰©ä»¶
         if (other.gameObject == collisionObject)
         {
-            // ¹Á¸Õ¨ú±oª«¥óªº Interactable ²Õ¥ó
+            // å˜—è©¦å–å¾—ç‰©ä»¶çš„ Interactable çµ„ä»¶
             Interactable interactable = other.gameObject.GetComponent<Interactable>();
             if (interactable != null && interactable.attachedToHand != null)
             {
-                // ¦pªGª«¥ó³Q§ì¨ú¡A¸Ñ°£§ì¨ú
+                // å¦‚æœç‰©ä»¶è¢«æŠ“å–ï¼Œè§£é™¤æŠ“å–
                 Hand hand = interactable.attachedToHand;
                 hand.DetachObject(other.gameObject);
             }
 
-            // ½T«O¬O¦aªOÄ²µoÂI
-            if (other.CompareTag("PlaneTrigger"))
+            // ç¢ºä¿æ˜¯åœ°æ¿è§¸ç™¼é»
+            if (other.CompareTag("PlaneTrigger") && !done)
             {
-                // ÁôÂÃºPÅ|Äµ¥ÜµP¡A«O¯d§ì¨úªºª«¥ó¥i¨£
+                done = true;
+                // éš±è—æ‘ºç–Šè­¦ç¤ºç‰Œï¼Œä¿ç•™æŠ“å–çš„ç‰©ä»¶å¯è¦‹
                 SetObjectVisibility(foldedSign, false);
 
-                // Åã¥Ü®i¶}Äµ¥ÜµP
+                // é¡¯ç¤ºå±•é–‹è­¦ç¤ºç‰Œ
                 unfoldedSign.SetActive(true);
                 if (tips != null) tips.SetActive(true);
             }
         }
     }
 
-    // ±±¨îª«¥óªºÅã¥Üª¬ºA¡A«O¯d§ì¨úªºª«¥óÅã¥Ü
+    // æ§åˆ¶ç‰©ä»¶çš„é¡¯ç¤ºç‹€æ…‹ï¼Œä¿ç•™æŠ“å–çš„ç‰©ä»¶é¡¯ç¤º
     private void SetObjectVisibility(GameObject obj, bool isVisible)
     {
-        // ¦pªGª«¥ó³Q§ì¨ú¡A¤£ÁôÂÃª«¥ó
+        // å¦‚æœç‰©ä»¶è¢«æŠ“å–ï¼Œä¸éš±è—ç‰©ä»¶
         if (obj != null)
         {
-            // ¦pªGª«¥ó¦³ Renderer ²Õ¥ó
+            // å¦‚æœç‰©ä»¶æœ‰ Renderer çµ„ä»¶
             Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
             foreach (Renderer renderer in renderers)
             {
                 if (renderer != null)
                 {
-                    // ¦pªGª«¥ó³Q§ì¨ú¡A¤â§â¤£·|¼vÅTª«¥óªºÅã¥Ü
+                    // å¦‚æœç‰©ä»¶è¢«æŠ“å–ï¼Œæ‰‹æŠŠä¸æœƒå½±éŸ¿ç‰©ä»¶çš„é¡¯ç¤º
                     if (obj.GetComponent<Interactable>() != null)
                     {
                         if (obj.GetComponent<Interactable>().attachedToHand != null)
                         {
-                            continue; // ª«¥ó³Q§ì¨ú®É¡A¸õ¹LÁôÂÃ
+                            continue; // ç‰©ä»¶è¢«æŠ“å–æ™‚ï¼Œè·³ééš±è—
                         }
                     }
                     renderer.enabled = isVisible;
