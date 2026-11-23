@@ -28,7 +28,7 @@ public class FallbackHeightLock : MonoBehaviour
         if (!ready)
             return;
         Vector3 p = transform.position;
-        p.y = floorY + eyeHeight;
+        p.y = floorY + eyeHeight - VRExtraControls.CrouchOffset; // 按住 C 蹲下
         transform.position = p;
     }
 

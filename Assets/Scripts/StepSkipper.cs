@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// 測試用「自動完成這一步」：在練習場景按鍵盤 N，程式會替你把這一步做完
+/// 測試用「自動完成這一步」：在練習場景按鍵盤 N（或戴頭盔時按右手側鍵），程式會替你把這一步做完
 /// （東西飛到腳本要的位置、該出現的物品出現、該穿上的穿上），然後跳出下一個提示。
 /// 按 B 只回到上一個提示，不會復原動作。
 ///
@@ -25,6 +25,13 @@ public class StepSkipper : MonoBehaviour
 
     readonly List<GameObject> steps = new List<GameObject>();
     bool busy;
+    static bool nextRequested;
+
+    /// <summary>從別的地方要求跳過這一步（例如右手側鍵，見 VRExtraControls）。</summary>
+    public static void RequestNext()
+    {
+        nextRequested = true;
+    }
 
     // 會「叫出提示」的欄位名稱
     static readonly HashSet<string> ShowFields = new HashSet<string>
@@ -70,7 +77,9 @@ public class StepSkipper : MonoBehaviour
     {
         if (busy)
             return;
-        if (Input.GetKeyDown(nextKey))
+        bool requested = nextRequested;
+        nextRequested = false;
+        if (Input.GetKeyDown(nextKey) || requested)
             StartCoroutine(Next());
         else if (Input.GetKeyDown(backKey))
             Back();

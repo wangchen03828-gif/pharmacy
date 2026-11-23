@@ -15,6 +15,7 @@ using Valve.VR.InteractionSystem;
 ///  - LockEveryFrame（預設）：每一幀都把攝影機鎖在「地板 + eyeHeight」，完全固定。
 ///    注意：鎖住後蹲下視角不會變，但手會跟著身體往下，碰不到地面的東西。
 ///  - Off：不調整，用頭盔量到的真實高度。
+/// 左手側鍵（Grip）按住可以蹲下，見 VRExtraControls。
 /// </summary>
 public class PlayerMovementScript : MonoBehaviour
 {
@@ -146,7 +147,9 @@ public class PlayerMovementScript : MonoBehaviour
         }
 
         float floor = useManualFloorY ? floorY : DetectFloor(head);
-        float offset = (floor + eyeHeight) - head.position.y;
+        // LockEveryFrame 時左手側鍵可以蹲下（VRExtraControls）
+        float crouch = heightMode == HeightMode.LockEveryFrame ? VRExtraControls.CrouchOffset : 0f;
+        float offset = (floor + eyeHeight - crouch) - head.position.y;
         transform.position += Vector3.up * offset;
         calibrated = true;
     }
